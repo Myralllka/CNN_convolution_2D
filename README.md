@@ -10,3 +10,11 @@ implementations, achieved results
 - Source code for traditional 2D convolution implementation
 - Source code for optimized 2D convolution implementation
 Use 2D convolution (3x3 kernel size) for 100x100x3 input.
+
+# Report
+### About Convolution in 2D
+
+# Sources
+- [article](http://www.songho.ca/dsp/convolution/convolution.html#convolution_2d)
+- [This video](https://www.youtube.com/watch?v=_iZ3Q7VXiGI)
+- [one more article](https://medium.com/@_init_/an-illustrated-explanation-of-performing-2d-convolutions-using-matrix-multiplications-1e8de8cd2544)
