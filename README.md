@@ -15,6 +15,7 @@ Use 2D convolution (3x3 kernel size) for 100x100x3 input.
 ### About Convolution in 2D
 
 # Sources
+- [video](https://www.youtube.com/watch?v=_iZ3Q7VXiGI)
 - [article](http://www.songho.ca/dsp/convolution/convolution.html#convolution_2d)
-- [This video](https://www.youtube.com/watch?v=_iZ3Q7VXiGI)
-- [one more article](https://medium.com/@_init_/an-illustrated-explanation-of-performing-2d-convolutions-using-matrix-multiplications-1e8de8cd2544)
+- [article](https://medium.com/@_init_/an-illustrated-explanation-of-performing-2d-convolutions-using-matrix-multiplications-1e8de8cd2544)
+- [article](https://www.allaboutcircuits.com/technical-articles/two-dimensional-convolution-in-image-processing/)
