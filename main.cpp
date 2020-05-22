@@ -40,24 +40,23 @@ void print(const matrix &buffer) {
     }
 }
 
-void traditional_2D_convolution(matrix &src, matrix &kernel, matrix &result) {
-    auto kernel_center= kernel.size() / 2;
-    for (int i = 0; i < src.size(); ++i) {
-        result.emplace_back();
-        for (int j = 0; j < src.size(); ++j) {
-            result[i].emplace_back();
+void my_traditional_2D_convolution(matrix &src, matrix &kernel, matrix &result)
+{
+    size_t a = src.size() - kernel.size() + 1;
+    matrix res(a,std::vector<int>(a));
+    for (int i = 0; i < a; ++i) {
+        for (int j = 0; j < a; ++j) {
+            int entry = 0;
             for (int m = 0; m < kernel.size(); ++m) {
-                int mm = kernel.size() - 1 - m;
                 for (int n = 0; n < kernel.size(); ++n) {
-                    int nn = kernel.size() - 1 - n;
-                    int ii = i + (kernel_center - mm);
-                    int jj = j + (kernel_center - nn);
-                    if (ii >= 0 && ii < src.size() && jj >= 0 && jj < src.size())
-                        result[i][j] += src[ii][jj] * kernel[mm][nn];
+                    entry += kernel[m][n]*src[i+m][j+n];
                 }
             }
+            res[i][j] = entry;
         }
     }
+//    print(res);
+    result = std::move(res);
 }
 
 void custom_2D_convolution(matrix &src, matrix &kernel, matrix &result) {
@@ -78,6 +77,6 @@ int main() {
     read_sqr_matrix_from_file(kernel_filename, kernel);
     read_sqr_matrix_from_file(input_filename, elements);
     //////////////////////////////////////////////
-    traditional_2D_convolution(elements, kernel, result);
+    my_traditional_2D_convolution(elements, kernel, result);
     print(result);
 }
