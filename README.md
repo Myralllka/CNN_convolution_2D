@@ -14,9 +14,11 @@ Use 2D convolution (3x3 kernel size) for 100x100x3 input.
 # Report
 ### Convolution in 2D
 #### Traditional solution
-The very simple and direct method is to iterate throw whole matrix and multiply each entry by kernel entry and add it to the result entry. It is O(N<sup>4</sup>) for N*N matrix and M*M kernel where M=N/2.
+The very simple and direct method is to iterate throw whole matrix and multiply each entry by kernel entry and add it to the result entry. It is ![formula](https://render.githubusercontent.com/render/math?math=O(N^4)) for ![formula](https://render.githubusercontent.com/render/math?math=N*N) matrix and ![formula](https://render.githubusercontent.com/render/math?math=M*M) kernel where ![formula](https://render.githubusercontent.com/render/math?math=M=\dfrac{N}{2}).
 So how to make it better? 
 #### 
+
+
 
 # Sources
 - [video](https://www.youtube.com/watch?v=_iZ3Q7VXiGI)
