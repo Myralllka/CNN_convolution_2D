@@ -2,15 +2,17 @@
 
 int main() {
     //////////////////////////////////////////////
-    std::string input_filename = "input";
-    std::string kernel_filename = "kernel";
+    std::string image_path = "image/";
+    std::string kernel_path = "kernel/";
     //////////////////////////////////////////////
-    matrix elements, kernel, result;
-    read_sqr_matrix_from_file(kernel_filename, kernel);
-    read_sqr_matrix_from_file(input_filename, elements);
-    //////////////////////////////////////////////
-    result = traditional_2D_convolution(elements, kernel);
-    print_matrix(result);
-    result = custom_2D_convolution(elements, kernel);
-    print_matrix(result);
+    std::vector<matrix> kernel;
+    std::vector<matrix> image;
+    for (const auto &file :std::filesystem::directory_iterator(image_path)) {
+        image.emplace_back(std::move(read_sqr_matrix_from_file(file.path())));
+    }
+    for (const auto &file :std::filesystem::directory_iterator(kernel_path)) {
+        kernel.emplace_back(std::move(read_sqr_matrix_from_file(file.path())));
+    }
+//    for (auto &ch:image) print_matrix(ch);
+    print_matrix(custom_2D_convolution(image, kernel));
 }

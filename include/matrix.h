@@ -9,16 +9,17 @@
 #include <vector>
 #include <fstream>
 #include <cmath>
+#include <filesystem>
 
 typedef std::vector<std::vector<int>> matrix;
 
-void read_sqr_matrix_from_file(const std::string &filename, matrix &buffer);
+matrix read_sqr_matrix_from_file(const std::string &filename);
 
 void print_matrix(const matrix &src);
 
 matrix traditional_2D_convolution(const matrix &src, const matrix &kernel);
 
-matrix custom_2D_convolution(const matrix &src, const matrix &kernel);
+matrix custom_2D_convolution(const std::vector<matrix> &src, const std::vector<matrix> &kernel);
 
 
 #endif //CNN_CONVOLUTION_2D_MATRIX_H

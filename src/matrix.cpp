@@ -12,13 +12,14 @@ void print_matrix(const matrix &src) {
     }
 }
 
-void read_sqr_matrix_from_file(const std::string &filename, matrix &buffer) {
+matrix read_sqr_matrix_from_file(const std::string &filename) {
+    matrix buffer;
     int x, y, lines = 0;
     std::string line;
     std::ifstream in(filename);
     if (!in) {
-        std::cout << "Cannot open file.\n";
-        return;
+        std::cout << "Cannot open file " << filename << std::endl;
+        exit(-1);
     }
     while (getline(in, line)) ++lines;
     in.close();
@@ -31,6 +32,7 @@ void read_sqr_matrix_from_file(const std::string &filename, matrix &buffer) {
         }
     }
     in.close();
+    return buffer;
 }
 
 [[maybe_unused]] matrix transpose(const matrix &src) {
@@ -74,8 +76,8 @@ void read_sqr_matrix_from_file(const std::string &filename, matrix &buffer) {
 }
 
 matrix patch_matrix(const matrix &src, const size_t kernel_size) {
-//    returns NON-Square matrix!
-// patch kernel for optimized convolution
+    //    returns NON-Square matrix!
+    // patch kernel for optimized convolution
     auto y = std::pow((src.size() - kernel_size + 1), 2);
     auto x = std::pow(kernel_size, 2);
     auto s_size = src.size() - kernel_size + 1;
@@ -113,11 +115,6 @@ matrix multiply(const matrix &first, const matrix &second) {
 
 matrix repatch_matrix(const matrix &src, const size_t res_size) {
     matrix result(res_size, std::vector<int>(res_size));
-//    for (int i = 0; i < res_size; ++i) {
-//        for (int j = 0; j < res_size; ++j) {
-//            result[i][j] = src
-//        }
-//    }
     int i = 0, j = 0;
     for (auto &row: src) {
         for (auto &element:row) {
@@ -132,9 +129,33 @@ matrix repatch_matrix(const matrix &src, const size_t res_size) {
     return result;
 }
 
-[[maybe_unused]] matrix custom_2D_convolution(const matrix &src, const matrix &kernel) {
-    auto patched_elements = patch_matrix(src, kernel.size());
-    auto patched_kernel = patch_matrix(kernel, kernel.size());
-    auto result = multiply(transpose(patched_kernel), patched_elements);
-    return repatch_matrix(result, src.size() - kernel.size() + 1);
+matrix im2col(const std::vector<matrix> &src, const size_t kernel_size) {
+    matrix result;
+    for (auto &ch:src){
+        for (std::vector<int> &entry: patch_matrix(ch, kernel_size)) {
+            result.emplace_back(entry);
+        }
+    }
+    return result;
+}
+
+matrix kernel2col(const std::vector<matrix> &src, const size_t src_size) {
+    matrix result;
+    for (auto &ch:src){
+        for (std::vector<int> &entry: patch_matrix(ch, ch.size())) {
+            result.emplace_back(entry);
+        }
+    }
+    return transpose(result);
+}
+
+[[maybe_unused]] matrix custom_2D_convolution(const std::vector<matrix> &src, const std::vector<matrix> &kernel) {
+//    auto patched_elements = im2col(src, kernel.size());
+//    auto patched_kernel = patch_matrix(kernel, kernel.size());
+//    auto result = multiply(transpose(patched_kernel), patched_elements);
+//    return repatch_matrix(result, src.size() - kernel.size() + 1);
+    auto patched_image = im2col(src, kernel[0].size());
+    auto patched_kernel = kernel2col(kernel, src.size());
+    return repatch_matrix(multiply(patched_kernel, patched_image), src[0].size() - kernel[0].size() + 1);
+//    return patched_image;
 }
