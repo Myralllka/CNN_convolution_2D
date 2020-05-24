@@ -2,14 +2,15 @@
 
 help_message="Usage: ./start.sh [options]
   Options:
-    -k    --kernel        Directory where kernel located
-    -m    --image         Directory where image located (one chanel per file)
+    -k    --kernel        Directory where kernel located. ./kernel/ by default.
+    -m    --image         Directory where image located (one chanel per file). ./image/ by default
     -c    --compile       Compile before executing
-    -co   --compileopt    Compile with ReleaseBuild Type
+    -co   --compileopt    Compile with optimization
     -h    --help          Show help message"
-
+kernel="kernel/"
+image="image/"
 while true; do
-  case $1 in
+  case $1 i
     -c|--compile)
       comp=true;
       shift
@@ -42,18 +43,6 @@ while true; do
       ;;
   esac
 done
-
-if [ -z "$image" ];
-then
-      echo "Error. Empty Image. Correct usage: $help_message"
-      exit 1
-fi
-
-if [ -z "$kernel" ];
-then
-      echo "Error. Empty Kernel. Correct usage: $help_message"
-      exit 1
-fi
 
 mkdir -p ./cmake-build-debug;
 pushd ./cmake-build-debug  > /dev/null || exit 1
