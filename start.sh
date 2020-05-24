@@ -10,7 +10,7 @@ help_message="Usage: ./start.sh [options]
 kernel="kernel/"
 image="image/"
 while true; do
-  case $1 i
+  case $1 in
     -c|--compile)
       comp=true;
       shift

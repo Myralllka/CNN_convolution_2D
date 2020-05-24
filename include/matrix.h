@@ -30,7 +30,7 @@ matrix im2col(const std::vector<matrix> &src, const int kernel_size);
 
 matrix kernel2col(const std::vector<matrix> &src);
 
-matrix multiply(const matrix &first, const matrix &second);
+[[maybe_unused]] matrix multiply(const matrix &first, const matrix &second);
 
 matrix repatch_matrix(const matrix &src, const int res_size);
 

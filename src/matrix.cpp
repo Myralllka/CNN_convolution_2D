@@ -114,7 +114,7 @@ matrix kernel2col(const std::vector<matrix> &src) {
     return transpose(result);
 }
 
-matrix multiply(const matrix &first, const matrix &second) {
+[[maybe_unused]] matrix multiply(const matrix &first, const matrix &second) {
     int number_of_flops = 0;
     matrix result(first.size(), std::vector<float>(second[0].size()));
     auto first_m = first.size(), second_m = second.size(), second_n = second[0].size();
@@ -169,9 +169,9 @@ matrix row_matrix_on_matrix_multiply_for_3x3_kernel(const matrix &first, const m
         r1 = _mm256_add_ps(r1, r2);
 //        r1 = _mm256_hadd_ps(r1, r1);
         asm volatile ("# avx code end");
-        result[0][++counter] = r1[0] + r1[1] + r1[2] + r1[3] + r1[4] + r1[5] + r1[6] + r1[7];
+        result[0][counter++] = r1[0] + r1[1] + r1[2] + r1[3] + r1[4] + r1[5] + r1[6] + r1[7];
     }
-    std::cout << number_of_flops << std::endl;
+//    std::cout << number_of_flops << std::endl;
     return result;
 }
 //
