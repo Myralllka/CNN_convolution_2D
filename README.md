@@ -24,8 +24,9 @@ And also it is needs to make some operations with the kernel: flatten each kerne
 
 # Sources
 - [video](https://www.youtube.com/watch?v=_iZ3Q7VXiGI)
-- [article](https://cs231n.github.io/convolutional-networks/#conv)
-- [article](http://www.songho.ca/dsp/convolution/convolution.html#convolution_2d)
-- [article](https://medium.com/@_init_/an-illustrated-explanation-of-performing-2d-convolutions-using-matrix-multiplications-1e8de8cd2544)
-- [article](https://www.allaboutcircuits.com/technical-articles/two-dimensional-convolution-in-image-processing/)
-- [article](https://www.analyticsvidhya.com/blog/2018/12/guide-convolutional-neural-network-cnn/)
+- [CNN article](https://cs231n.github.io/convolutional-networks/#conv)
+- [CNN article](http://www.songho.ca/dsp/convolution/convolution.html#convolution_2d)
+- [CNN article](https://medium.com/@_init_/an-illustrated-explanation-of-performing-2d-convolutions-using-matrix-multiplications-1e8de8cd2544)
+- [CNN article](https://www.allaboutcircuits.com/technical-articles/two-dimensional-convolution-in-image-processing/)
+- [CNN article](https://www.analyticsvidhya.com/blog/2018/12/guide-convolutional-neural-network-cnn/)
+- [SSE article](https://www.codeproject.com/Articles/874396/Crunching-Numbers-with-AVX-and-AVX)
