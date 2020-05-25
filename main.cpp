@@ -13,7 +13,7 @@ int main(int argc, char *argv[]) {
     } else if (argc > 3) {
         std::cerr << "Too many arguments. Usage:\n"
                      "\t program_name [image_directory] [kernel_directory]" << std::endl;
-        exit(1);
+        return 1;
     }
 
     //////////////////////////////////////////////
@@ -28,5 +28,5 @@ int main(int argc, char *argv[]) {
 //    for (auto &ch:image) print_matrix(ch);
     print_matrix(traditional_2D_convolution(image, kernel));
     print_matrix(custom_2D_convolution(image, kernel));
-
+    return 0;
 }

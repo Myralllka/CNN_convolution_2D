@@ -151,7 +151,7 @@ matrix row_matrix_on_matrix_multiply_for_3x3_kernel(const matrix &first, const m
         for (size_t i = 0; i < vec.size(); ++i) {
             right[i] = vec[i];
         }
-//        asm volatile ("# avx code begin");
+         asm volatile ("# avx code begin");
         // store one vector of image in other four YMM registers
         __m256 r1 = _mm256_load_ps(right.data);
         __m256 r2 = _mm256_load_ps(right.data + 8);

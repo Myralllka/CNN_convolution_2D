@@ -11,8 +11,8 @@
 #include <cmath>
 #include <filesystem>
 #include <xmmintrin.h>
-//#include <algorithm>
 
+#define ALIGNMENT 32
 
 typedef std::vector<std::vector<float>> matrix;
 
@@ -40,7 +40,7 @@ public:
     float *data;
 
     m_vector(size_t n) : size(n) {
-        data = (float *) aligned_alloc(32, size * sizeof(float));
+        data = static_cast<float*>(aligned_alloc(ALIGNMENT, size * sizeof(float))) ;
         for (size_t i = 0; i < size; ++i) {
             data[i] = 0;
         }
@@ -54,7 +54,7 @@ public:
         return data[i];
     }
 
-    size_t get_size() {
+    [[nodiscard]] const size_t get_size() {
         return size;
     }
 };
