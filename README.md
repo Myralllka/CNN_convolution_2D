@@ -46,7 +46,7 @@ Options:
     -h    --help          Show help message
 ```
 ### Result
-Counter of FLOP shows that I used 6 times less multiply operations. But, as far as there is such functions as `im2col`, `transpose`, `patch` and `repatch`, that access memory without space locality, and on such small sizes I can not measure the time (`hrono library theoraticaly can count up to microseconds, but practically up to seconds`). 
+Counter of FLOP shows that I used 6 times less multiply operations. But, as far as there is such functions as `im2col`, `transpose`, `patch` and `repatch`, that access memory without space locality, and on such small sizes I can not measure the time (`chrono library theoraticaly can count up to microseconds, but practically up to seconds`). 
 # Important REMARK
 In this implementation I used special intrinsics for `Intel x86` processors, used in `row_matrix_on_matrix_multiply_for_3x3_kernel` function (src/matrix.cpp file 133 row). To compile it on `intel core i7-7700Hq` there is obligatory __CMake__ command `set(DCMAKE_CXX_FLAGS=-mavx2)` that is in __CMakeLists.txt__ row 7. CLion warnings that I used non-portable x86_64 intrinsic functions, but no way. 
 # Sources
