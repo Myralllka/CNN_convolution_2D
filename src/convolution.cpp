@@ -5,16 +5,16 @@
 #include "../include/matrix.h"
 
 matrix traditional_2D_convolution(const std::vector<matrix> &src, const std::vector<matrix> &kernel) {
-    int result_matrix_size = src[0].size() - kernel[0].size() + 1;
+    size_t result_matrix_size = src[0].size() - kernel[0].size() + 1;
     auto k_size = kernel[0].size();
     float entry;
     matrix result(result_matrix_size, std::vector<float>(result_matrix_size));
-    for (int counter = 0; counter < src.size(); ++counter) {
-        for (int i = 0; i < result_matrix_size; ++i) {
-            for (int j = 0; j < result_matrix_size; ++j) {
+    for (size_t counter = 0; counter < src.size(); ++counter) {
+        for (size_t i = 0; i < result_matrix_size; ++i) {
+            for (size_t j = 0; j < result_matrix_size; ++j) {
                 entry = 0;
-                for (int m = 0; m < k_size; ++m) {
-                    for (int n = 0; n < k_size; ++n) {
+                for (size_t m = 0; m < k_size; ++m) {
+                    for (size_t n = 0; n < k_size; ++n) {
                         entry += kernel[counter][m][n] * src[counter][i + m][j + n];
                     }
                 }

@@ -24,15 +24,13 @@ matrix traditional_2D_convolution(const std::vector<matrix> &src, const std::vec
 
 matrix custom_2D_convolution(const std::vector<matrix> &src, const std::vector<matrix> &kernel);
 
-float *vector_to_float_ptr(std::vector<float> &src);
-
-matrix im2col(const std::vector<matrix> &src, const int kernel_size);
+matrix im2col(const std::vector<matrix> &src, const size_t kernel_size);
 
 matrix kernel2col(const std::vector<matrix> &src);
 
 [[maybe_unused]] matrix multiply(const matrix &first, const matrix &second);
 
-matrix repatch_matrix(const matrix &src, const int res_size);
+matrix repatch_matrix(const matrix &src, const size_t res_size);
 
 matrix row_matrix_on_matrix_multiply_for_3x3_kernel(const matrix &first, const matrix &second);
 
@@ -41,9 +39,9 @@ class m_vector {
 public:
     float *data;
 
-    m_vector(int n) : size(n) {
+    m_vector(size_t n) : size(n) {
         data = (float *) aligned_alloc(32, size * sizeof(float));
-        for (int i = 0; i < size; ++i) {
+        for (size_t i = 0; i < size; ++i) {
             data[i] = 0;
         }
     }
@@ -52,7 +50,7 @@ public:
         free(data);
     }
 
-    float &operator[](int i) {
+    float &operator[](size_t i) {
         return data[i];
     }
 

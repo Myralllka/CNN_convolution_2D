@@ -14,7 +14,7 @@ void print_matrix(const matrix &src) {
 
 matrix read_sqr_matrix_from_file(const std::string &filename) {
     matrix buffer;
-    int x, y, lines = 0;
+    size_t x, y, lines = 0;
     std::string line;
     std::ifstream in(filename);
     if (!in) {
@@ -40,8 +40,8 @@ matrix read_sqr_matrix_from_file(const std::string &filename) {
     auto n = src.size();
     auto m = src[0].size();
     matrix result(m, std::vector<float>(n));
-    for (int i = 0; i < n; ++i) {
-        for (int j = 0; j < m; ++j) {
+    for (size_t i = 0; i < n; ++i) {
+        for (size_t j = 0; j < m; ++j) {
             result[j][i] = src[i][j];
         }
     }
@@ -55,18 +55,18 @@ matrix read_sqr_matrix_from_file(const std::string &filename) {
     std::reverse(src.begin(), src.end());
 }
 
-matrix patch_matrix(const matrix &src, const int kernel_size) {
+matrix patch_matrix(const matrix &src, const size_t kernel_size) {
     //    returns NON-Square matrix!
     // patch kernel for optimized convolution
     auto y = std::pow((src.size() - kernel_size + 1), 2);
     auto x = std::pow(kernel_size, 2);
     auto s_size = src.size() - kernel_size + 1;
-    int counter_x = 0, counter_y = 0;
+    size_t counter_x = 0, counter_y = 0;
     matrix result(x, std::vector<float>(y));
-    for (int i = 0; i < s_size; ++i) {
-        for (int j = 0; j < s_size; ++j) {
-            for (int m = 0; m < kernel_size; ++m) {
-                for (int n = 0; n < kernel_size; ++n) {
+    for (size_t i = 0; i < s_size; ++i) {
+        for (size_t j = 0; j < s_size; ++j) {
+            for (size_t m = 0; m < kernel_size; ++m) {
+                for (size_t n = 0; n < kernel_size; ++n) {
                     result[counter_x++][counter_y] = src[i + m][j + n];
                 }
             }
@@ -78,9 +78,9 @@ matrix patch_matrix(const matrix &src, const int kernel_size) {
 }
 
 
-matrix repatch_matrix(const matrix &src, const int res_size) {
+matrix repatch_matrix(const matrix &src, const size_t res_size) {
     matrix result(res_size, std::vector<float>(res_size));
-    int i = 0, j = 0;
+    size_t i = 0, j = 0;
     for (auto &row: src) {
         for (auto &element:row) {
             result[i][j] = element;
@@ -94,7 +94,7 @@ matrix repatch_matrix(const matrix &src, const int res_size) {
     return result;
 }
 
-matrix im2col(const std::vector<matrix> &src, const int kernel_size) {
+matrix im2col(const std::vector<matrix> &src, const size_t kernel_size) {
     matrix result;
     for (auto &ch:src) {
         for (std::vector<float> &entry: patch_matrix(ch, kernel_size)) {
@@ -115,12 +115,12 @@ matrix kernel2col(const std::vector<matrix> &src) {
 }
 
 [[maybe_unused]] matrix multiply(const matrix &first, const matrix &second) {
-    int number_of_flops = 0;
+    size_t number_of_flops = 0;
     matrix result(first.size(), std::vector<float>(second[0].size()));
     auto first_m = first.size(), second_m = second.size(), second_n = second[0].size();
-    for (int i = 0; i < first_m; ++i) {
-        for (int k = 0; k < second_m; ++k) {
-            for (int j = 0; j < second_n; ++j) {
+    for (size_t i = 0; i < first_m; ++i) {
+        for (size_t k = 0; k < second_m; ++k) {
+            for (size_t j = 0; j < second_n; ++j) {
                 result[i][j] += first[i][k] * second[k][j];
                 ++number_of_flops;
             }
@@ -132,10 +132,10 @@ matrix kernel2col(const std::vector<matrix> &src) {
 
 matrix row_matrix_on_matrix_multiply_for_3x3_kernel(const matrix &first, const matrix &second) {
     matrix result(first.size(), std::vector<float>(second[0].size()));
-    int counter = 0;
-    int number_of_flops = 0;
+    size_t counter = 0;
+    size_t number_of_flops = 0;
     m_vector left((first[0].size() / 8 + 1) * 8);
-    for (int i = 0; i < first[0].size(); ++i) {
+    for (size_t i = 0; i < first[0].size(); ++i) {
         left[i] = first[0][i];
     }
     asm volatile ("# avx code begin");
@@ -148,7 +148,7 @@ matrix row_matrix_on_matrix_multiply_for_3x3_kernel(const matrix &first, const m
 
     for (auto &vec:transpose(second)) {
         m_vector right((vec.size() / 8 + 1) * 8);
-        for (int i = 0; i < vec.size(); ++i) {
+        for (size_t i = 0; i < vec.size(); ++i) {
             right[i] = vec[i];
         }
 //        asm volatile ("# avx code begin");
