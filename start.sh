@@ -49,7 +49,7 @@ pushd ./cmake-build-debug  > /dev/null || exit 1
 
 if [[ "$comp" = true ]]; then
   echo Compiling...
-  cmake "$flags" -G"Unix Makefiles" ..;
+  cmake "$flags" ..;
   make;
 fi;
 
