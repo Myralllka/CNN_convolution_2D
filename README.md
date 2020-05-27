@@ -27,7 +27,8 @@ It have to be faster, because YMM registers can store and make operations on 8 f
 #### Winograd's Algorithm
 One more very fast approach for fast Convolution is this algorithm, but I have not found any more detail info than [here](https://blog.usejournal.com/understanding-winograd-fast-convolution-a75458744ff). 
 # Final custom Implementation
-As far as the task is implement 2D CNN as matrix multiplications for 100x100x3 input image and 3x3 kernel, and reduce the number of multiplications, I decided to make it using SIMD approach, YMM x86 registers that can store up to 8 float numbers, using intrinsics for cpp. I have made multiplication function only for vector (patched 1 source kernel) on the patched matrix after im2col custom function. The cons of solution are that it is not optimized because of usage `std::vector`, it can be much more faster, and it is only up to 3x3 kernel. Pros are that it works and written on the high-level programming language (only one function C- or asm-like), easy for reading, understanding and future developing.  
+As far as the task is implement 2D CNN as matrix multiplications for 100x100x3 input image and 3x3 kernel, and reduce the number of multiplications, I decided to make it using SIMD approach, YMM x86 registers that can store up to 8 float numbers, using intrinsics for cpp. 
+I have made multiplication function only for vector (patched 1 source kernel) on the patched matrix after im2col custom function. I used here a custom matrix class that inside is one dimensional `float*` array, allocated with alignment (I don\`t know and can not find how to make it with `new`).  
 # Project structure & usage
 ### Structure
 <b>Image</b> folder contains 3 files, 3 different channels for convolution. <b>Kernel</b> folder contains 3 files, 3 different channels for kernels. If there need to be only one, there have to be three copies of one file.</br>
@@ -46,9 +47,17 @@ Options:
     -h    --help          Show help message
 ```
 ### Result
-Counter of FLOP shows that I used 6 times less multiply operations. But, as far as there is such functions as `im2col`, `transpose`, `patch` and `repatch`, that access memory without space locality, and on such small sizes I can not measure the time (`chrono library theoraticaly can count up to microseconds, but practically up to seconds`). 
+Counter of FLOP shows that I used 6 times less multiply operations. 
+But, as far as there were such functions as `im2col`, `transpose`, `patch` and `repatch`, that access memory without space locality and are just additional useless operations, I refuse that operations and leave only `im2col`.
+So now on 100x100x3 input image and 3x3x3 kernel this implementation times are **53.57sec** for traditional and **34.7sec** for custom one. As perf shows, that `im2col` now takes the most time.
+#### What I have changed from yesterday
+- Custom matrix class
+- Reduce number of allocations because analyze the project better using `perf` and `hotspot`, reduce number of irrelevant allocations and useless functions (for example, instead of transpose I have modified im2col, that now it produced already transposed matrix that is better for multiplication using SIMD.)
+- Improve memory allocations, so now there now need to reallocate align memory - after im2col the matrix is totally ready for be loaded into YMM registers that is very fast
 # Important REMARK
-In this implementation I used special intrinsics for `Intel x86` processors, used in `row_matrix_on_matrix_multiply_for_3x3_kernel` function (src/matrix.cpp file 133 row). To compile it on `intel core i7-7700Hq` there is obligatory __CMake__ command `set(DCMAKE_CXX_FLAGS=-mavx2)` that is in __CMakeLists.txt__ row 7. CLion warnings that I used non-portable x86_64 intrinsic functions, but no way. 
+In this implementation I used special intrinsics for `Intel x86` processors, used in `row_matrix_on_matrix_multiply_for_3x3_kernel` function (src/matrix.cpp file 133 row). 
+To compile it on `intel core i7-7700Hq` there is obligatory __CMake__ command `set(DCMAKE_CXX_FLAGS=-mavx)` that is in __CMakeLists.txt__ row 7. 
+CLion warnings that I\`m using non-portable x86_64 intrinsic functions, but no way. 
 # Sources
 - [video](https://www.youtube.com/watch?v=_iZ3Q7VXiGI)
 - [CNN general article](https://cs231n.github.io/convolutional-networks/#conv)
