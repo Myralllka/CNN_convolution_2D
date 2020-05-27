@@ -32,8 +32,7 @@ int main(int argc, char *argv[]) {
     auto finish_time = get_current_time_fenced();
     std::cout << "Total for custom: " << to_us(finish_time - start_time) << std::endl;
     start_time = get_current_time_fenced();
-    for (int i = 0; i < 100
-    000; ++i) {
+    for (int i = 0; i < 100000; ++i) {
         auto trad = traditional_2D_convolution(image, kernel);
     }
     finish_time = get_current_time_fenced();
