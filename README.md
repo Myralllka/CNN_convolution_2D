@@ -54,6 +54,8 @@ So now on 100x100x3 input image and 3x3x3 kernel this implementation times are *
 - Custom matrix class
 - Reduce number of allocations because analyze the project better using `perf` and `hotspot`, reduce number of irrelevant allocations and useless functions (for example, instead of transpose I have modified im2col, that now it produced already transposed matrix that is better for multiplication using SIMD.)
 - Improve memory allocations, so now there now need to reallocate align memory - after im2col the matrix is totally ready for be loaded into YMM registers that is very fast
+- Added time measurement
+- (Hope) fixed possibility to compile on another pc
 # Important REMARK
 In this implementation I used special intrinsics for `Intel x86` processors, used in `row_matrix_on_matrix_multiply_for_3x3_kernel` function (src/matrix.cpp file 133 row). 
 To compile it on `intel core i7-7700Hq` there is obligatory __CMake__ command `set(DCMAKE_CXX_FLAGS=-mavx)` that is in __CMakeLists.txt__ row 7. 
