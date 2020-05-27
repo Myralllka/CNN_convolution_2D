@@ -17,16 +17,26 @@ int main(int argc, char *argv[]) {
     }
 
     //////////////////////////////////////////////
-    std::vector<matrix> kernel;
-    std::vector<matrix> image;
+    std::vector<m_matrix> kernel;
+    std::vector<m_matrix> image;
     for (const auto &file :std::filesystem::directory_iterator(image_path)) {
-        image.emplace_back(std::move(read_sqr_matrix_from_file(file.path())));
+        image.emplace_back(read_sqr_matrix_from_file(file.path()));
     }
     for (const auto &file :std::filesystem::directory_iterator(kernel_path)) {
-        kernel.emplace_back(std::move(read_sqr_matrix_from_file(file.path())));
+        kernel.push_back(read_sqr_matrix_from_file(file.path()));
     }
-//    for (auto &ch:image) print_matrix(ch);
-    print_matrix(traditional_2D_convolution(image, kernel));
-    print_matrix(custom_2D_convolution(image, kernel));
+    auto start_time = get_current_time_fenced();
+    for (int i = 0; i < 100000; ++i) {
+        auto cus = custom_2D_convolution(image, kernel);
+    }
+    auto finish_time = get_current_time_fenced();
+    std::cout << "Total for custom: " << to_us(finish_time - start_time) << std::endl;
+    start_time = get_current_time_fenced();
+    for (int i = 0; i < 100
+    000; ++i) {
+        auto trad = traditional_2D_convolution(image, kernel);
+    }
+    finish_time = get_current_time_fenced();
+    std::cout << "Total for traditional: " << to_us(finish_time - start_time) << std::endl;
     return 0;
 }

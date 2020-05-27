@@ -11,53 +11,17 @@
 #include <cmath>
 #include <filesystem>
 #include <xmmintrin.h>
+#include "speed_tester.h"
+#include "m_matrix.h"
 
-#define ALIGNMENT 32
+m_matrix read_sqr_matrix_from_file(const std::string &filename);
 
-typedef std::vector<std::vector<float>> matrix;
+m_matrix traditional_2D_convolution(std::vector<m_matrix> &src, std::vector<m_matrix> &kernel);
 
-matrix read_sqr_matrix_from_file(const std::string &filename);
+m_matrix custom_2D_convolution(std::vector<m_matrix> &src, const std::vector<m_matrix> &kernel);
 
-void print_matrix(const matrix &src);
+m_matrix multiply_up_to_3x3_kernel(const m_matrix &first, const m_matrix &second);
 
-matrix traditional_2D_convolution(const std::vector<matrix> &src, const std::vector<matrix> &kernel);
-
-matrix custom_2D_convolution(const std::vector<matrix> &src, const std::vector<matrix> &kernel);
-
-matrix im2col(const std::vector<matrix> &src, const size_t kernel_size);
-
-matrix kernel2col(const std::vector<matrix> &src);
-
-[[maybe_unused]] matrix multiply(const matrix &first, const matrix &second);
-
-matrix repatch_matrix(const matrix &src, const size_t res_size);
-
-matrix row_matrix_on_matrix_multiply_for_3x3_kernel(const matrix &first, const matrix &second);
-
-class m_vector {
-    size_t size;
-public:
-    float *data;
-
-    m_vector(size_t n) : size(n) {
-        data = static_cast<float*>(aligned_alloc(ALIGNMENT, size * sizeof(float))) ;
-        for (size_t i = 0; i < size; ++i) {
-            data[i] = 0;
-        }
-    }
-
-    ~m_vector() {
-        free(data);
-    }
-
-    float &operator[](size_t i) {
-        return data[i];
-    }
-
-    [[nodiscard]] const size_t get_size() {
-        return size;
-    }
-};
-
+m_matrix repatch(const m_matrix &src, const size_t &res_size);
 
 #endif //CNN_CONVOLUTION_2D_MATRIX_H

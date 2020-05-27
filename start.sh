@@ -49,7 +49,7 @@ pushd ./cmake-build-debug  > /dev/null || exit 1
 
 if [[ "$comp" = true ]]; then
   echo Compiling...
-  cmake "$flags" ..;
+  cmake "$flags" -DCMAKE_CXX_FLAGS=-mavx -DCMAKE_EXPORT_COMPILE_COMMANDS=On ..;
   make;
 fi;
 
